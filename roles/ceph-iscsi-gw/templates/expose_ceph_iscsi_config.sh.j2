@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -xe
+
+if [ -f /run/ostree-booted ]; then
+    mount -o remount,rw /usr
+fi
+
+{% raw %}
+ln -sf /proc/$(docker inspect --format {{.State.Pid}} rbd-target-api)/root/usr/lib/python2.7/site-packages/ceph_iscsi_config /usr/lib/python2.7/site-packages/
+{% endraw %}
+
+if [ -f /run/ostree-booted ]; then
+    mount -o remount,ro /usr
+fi
